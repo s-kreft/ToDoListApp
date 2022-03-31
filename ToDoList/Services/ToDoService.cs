@@ -2,10 +2,10 @@
 {
     public class ToDoService : IToDoService, IDisposable
     {
-        private List<Models.ToDoTask> _db;
+        private Dictionary<int, Models.ToDoTask> _db;
         public ToDoService()
         {
-            _db = new List<Models.ToDoTask>();
+            _db = new Dictionary<int, Models.ToDoTask>();
             PutInDB();
         }
         Models.ToDoTask task1 = new Models.ToDoTask(1, "task1", "testowy test");
@@ -27,36 +27,35 @@
 
         public void PutInDB()
         {
-            _db.Add(task1);
-            _db.Add(task2);
+            _db.Add(task1.Id, task1);
+            _db.Add(task2.Id, task2);
         }
         public Models.ToDoTask GetFromList(int id)
         {
             foreach (var task in _db)
             {
-                if(task.Id == id)
+                if(task.Key == id)
                 {
-                    return task;
+                    return task.Value;
                 }
             }
             return null;
         }
-        public Models.ToDoTask DeleteFromList(int id)
+        public void DeleteFromList(int id)
         {
-            foreach(var task in _db)
+            if(_db.ContainsKey(id))
             {
-                if(task.Id == id)
-                {
-                    _db.Remove(task);
-                    break;
-                }
+                _db.Remove(id);
             }
-            return null;
         }
 
         public void AddTask(Models.ToDoTask task)
         {
-             _db.Add(task);
+            if(!_db.ContainsKey(task.Id))
+            {
+                _db.Add(task.Id, task);
+            }
+             
         }
     }
 }

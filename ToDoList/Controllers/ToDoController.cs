@@ -39,9 +39,9 @@ namespace ToDoList.Controllers
         }
 
         [HttpDelete("/delete/{id}")]
-        public Models.ToDoTask DeleteTask(int id)
+        public void DeleteTask(int id)
         {
-            return _toDoService.DeleteFromList(id);
+             _toDoService.DeleteFromList(id);
         }
     }
 }
