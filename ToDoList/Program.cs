@@ -1,4 +1,6 @@
 using ToDoList.Services;
+using ToDoList.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ToDoList
 {
@@ -6,11 +8,16 @@ namespace ToDoList
     {
         public static void Main(string[] args)
         {
+           
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<TaskContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
 
             builder.Services.AddSingleton<IToDoService>(new ToDoService());
